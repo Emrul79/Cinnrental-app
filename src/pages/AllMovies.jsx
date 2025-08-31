@@ -4,7 +4,7 @@ import SingleMovie from "../components/SingleMovie";
 
 export default function AllMovies({ onClickHandler }) {
   const data = getData();
-  console.log(data);
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">All Movies</h1>

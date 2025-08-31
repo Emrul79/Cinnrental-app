@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import tag from "../assets/movie-covers/tag.svg";
+import { movieContext } from "../context";
 import { getImage } from "../utils/cine_utils";
 import MovieDetailsPopUp from "./MovieDetailsPopUp";
 import Rating from "./rating";
@@ -7,6 +9,22 @@ import Rating from "./rating";
 export default function SingleMovie({ movie }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const { cartData, setCartData } = useContext(movieContext);
+
+  const handleAddToCart = (event, movie) => {
+    event.stopPropagation();
+    const found = cartData.find((item) => {
+      return item.id === movie.id;
+    });
+    if (!found) {
+      setCartData([...cartData, movie]);
+      toast.success(`Added ${movie.title} to cart`);
+    } else {
+      toast.error(
+        `The movie ${movie.title} has been added to the cart already`
+      );
+    }
+  };
 
   const handleClose = () => {
     setSelectedMovie(null);
@@ -20,10 +38,14 @@ export default function SingleMovie({ movie }) {
   return (
     <>
       {showModal && (
-        <MovieDetailsPopUp movie={selectedMovie} onClose={handleClose} />
+        <MovieDetailsPopUp
+          movie={selectedMovie}
+          onClose={handleClose}
+          handleAddToCart={handleAddToCart}
+        />
       )}
-      <figure className="flex flex-col h-full p-4 border border-black/10 shadow-sm dark:border-white/10 rounded-xl">
-        <a href="#" onClick={handleSelectedMovie(movie)}>
+      <figure className="flex flex-col min-h-[500px] p-4 border border-black/10 shadow-sm dark:border-white/10 rounded-xl">
+        <div onClick={handleSelectedMovie(movie)} className="cursor-pointer">
           <div
             onClick={() => setShowModal(true)}
             className="w-full h-80 overflow-hidden rounded-lg"
@@ -41,15 +63,15 @@ export default function SingleMovie({ movie }) {
               <Rating value={movie.rating} />
             </div>
             <div className="flex-1"></div>
-            <a
-              className="bg-emerald-500 rounded-lg py-2 px-5 flex items-center justify-center gap-2 text-[#171923] font-semibold text-sm"
-              href="#"
+            <button
+              onClick={(e) => handleAddToCart(e, movie)}
+              className="bg-emerald-500 rounded-lg py-2 px-5 flex items-center justify-center gap-2 text-[#171923] font-semibold text-sm hover:bg-emerald-600 transition-colors duration-200"
             >
               <img src={tag} />
               <span>${movie.price} | Add to Cart</span>
-            </a>
+            </button>
           </figcaption>
-        </a>
+        </div>
       </figure>
     </>
   );
