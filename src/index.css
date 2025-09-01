@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dark {
+  @apply bg-[#171923] text-white;
+}
+
+.light {
+  @apply bg-white text-[#171923];
+}

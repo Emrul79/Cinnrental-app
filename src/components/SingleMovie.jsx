@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { FaHeart } from "react-icons/fa";
 import { toast } from "react-toastify";
 import tag from "../assets/movie-covers/tag.svg";
 import { movieContext } from "../context";
@@ -9,7 +10,8 @@ import Rating from "./rating";
 export default function SingleMovie({ movie }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const { cartData, setCartData } = useContext(movieContext);
+  const { cartData, setCartData, favorites, setFavorites } =
+    useContext(movieContext);
 
   const handleAddToCart = (event, movie) => {
     event.stopPropagation();
@@ -35,6 +37,21 @@ export default function SingleMovie({ movie }) {
     setSelectedMovie(movie);
     setShowModal(true);
   };
+
+  const handleToggleFavorite = (event, movie) => {
+    event.stopPropagation();
+    const isFavorite = favorites.find((item) => item.id === movie.id);
+
+    if (isFavorite) {
+      setFavorites(favorites.filter((item) => item.id !== movie.id));
+      toast.success(`Removed ${movie.title} from favorites`);
+    } else {
+      setFavorites([...favorites, movie]);
+      toast.success(`Added ${movie.title} to favorites`);
+    }
+  };
+
+  const isFavorite = favorites.find((item) => item.id === movie.id);
   return (
     <>
       {showModal && (
@@ -59,8 +76,25 @@ export default function SingleMovie({ movie }) {
           <figcaption className="flex flex-col flex-1 pt-4">
             <h3 className="text-xl mb-1 line-clamp-2">{movie.title}</h3>
             <p className="text-[#575A6E] text-sm mb-2">{movie.genre}</p>
-            <div className="flex items-center space-x-1 mb-4">
+            <div className="flex items-center justify-between space-x-1 mb-4">
               <Rating value={movie.rating} />
+              <button
+                onClick={(e) => handleToggleFavorite(e, movie)}
+                className={`p-2 rounded-full transition-all duration-200 hover:scale-110 ${
+                  isFavorite
+                    ? "text-red-800 bg-red-50 dark:bg-red-900/20"
+                    : "text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                }`}
+                title={
+                  isFavorite ? "Remove from favorites" : "Add to favorites"
+                }
+              >
+                <FaHeart
+                  className={`w-5 h-5 transition-colors duration-200 ${
+                    isFavorite ? "fill-current" : ""
+                  }`}
+                />
+              </button>
             </div>
             <div className="flex-1"></div>
             <button

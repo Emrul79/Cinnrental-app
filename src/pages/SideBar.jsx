@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { FaHeart } from "react-icons/fa";
 import commingSoon from "../assets/icons/commingSoon.svg";
-import favorite from "../assets/icons/favourite.svg";
 import newRelease from "../assets/icons/newRelease.svg";
 import tranding from "../assets/icons/trending.svg";
 import watchLater from "../assets/icons/watchLater.svg";
+import { movieContext } from "../context";
 
 export default function SideBar() {
-  const [selectedCategory, setSelectedCategory] = useState("trending");
+  const { selectedCategory, setSelectedCategory } = useContext(movieContext);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -58,8 +59,8 @@ export default function SideBar() {
             href="#"
             onClick={() => handleCategoryClick("favourites")}
           >
-            <img src={favorite} width="24" height="24" alt="" />
-            <span>Favourites</span>
+            <FaHeart />
+            <span>Favorites</span>
           </a>
         </li>
         <li>

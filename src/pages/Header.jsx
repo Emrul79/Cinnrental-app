@@ -2,16 +2,17 @@ import React, { useContext, useState } from "react";
 
 import { toast } from "react-toastify";
 import moon from "../assets/icons/moon.svg";
+import sun from "../assets/icons/sun.svg";
 import logo from "../assets/movie-covers/logo.svg";
 import ring from "../assets/movie-covers/ring.svg";
 import shoffingCart from "../assets/movie-covers/shopping-cart.svg";
 import CartDetails from "../components/CartDetails";
-import { movieContext } from "../context";
+import { movieContext, themeContext } from "../context";
 
 export default function Header() {
   const [showCart, setShowCart] = useState(false);
   const { cartData, searchQuery, setSearchQuery } = useContext(movieContext);
-
+  const { darkMode, setDarkMode } = useContext(themeContext);
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -44,8 +45,14 @@ export default function Header() {
               <a
                 className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block"
                 href="#"
+                onClick={() => setDarkMode((darkMode) => !darkMode)}
               >
-                <img src={moon} width="24" height="24" alt="" />
+                <img
+                  src={darkMode ? sun : moon}
+                  width="24"
+                  height="24"
+                  alt=""
+                />
               </a>
             </li>
             <li>
