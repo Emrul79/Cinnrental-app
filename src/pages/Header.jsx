@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 
+import { toast } from "react-toastify";
 import moon from "../assets/icons/moon.svg";
 import logo from "../assets/movie-covers/logo.svg";
 import ring from "../assets/movie-covers/ring.svg";
@@ -9,13 +10,15 @@ import { movieContext } from "../context";
 
 export default function Header() {
   const [showCart, setShowCart] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const { cartData } = useContext(movieContext);
+  const { cartData, searchQuery, setSearchQuery } = useContext(movieContext);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // TODO: Implement search functionality
-    console.log("Searching for:", searchQuery);
+    if (searchQuery.trim()) {
+      toast.success(`Searching for: ${searchQuery}`);
+    } else {
+      toast.error("Please enter a search term");
+    }
   };
 
   return (

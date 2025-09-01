@@ -7,9 +7,12 @@ import MainSection from "./pages/MainSection";
 
 function App() {
   const [cartData, setCartData] = React.useState([]);
-  console.log(cartData);
+  const [searchQuery, setSearchQuery] = React.useState("");
+
   return (
-    <movieContext.Provider value={{ cartData, setCartData }}>
+    <movieContext.Provider
+      value={{ cartData, setCartData, searchQuery, setSearchQuery }}
+    >
       <div className="dark:bg-body bg-white font-[Sora] dark:text-white text-dark">
         <Header />
         <MainSection />

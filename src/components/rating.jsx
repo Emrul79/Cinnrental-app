@@ -11,7 +11,8 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 export default function Rating({ value = 0, onChange }) {
   const [rating, setRating] = useState(value);
 
-  const handleClick = (index) => {
+  const handleClick = (index, event) => {
+    event.stopPropagation(); // Prevent event from bubbling up to parent
     setRating(index + 1);
     if (onChange) {
       onChange(index + 1);
@@ -24,7 +25,7 @@ export default function Rating({ value = 0, onChange }) {
         <span
           key={index}
           className="cursor-pointer text-2xl"
-          onClick={() => handleClick(index)}
+          onClick={(event) => handleClick(index, event)}
         >
           {index < rating ? (
             <FaStar className="text-green-500" />
