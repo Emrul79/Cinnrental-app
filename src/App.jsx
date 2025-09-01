@@ -1,27 +1,19 @@
-import React from "react";
+import React, { useReducer } from "react";
 
 // eslint-disable-next-line no-unused-vars
 import { movieContext, themeContext } from "./context";
 import RootPage from "./pages/RootPage";
-
+import { movieReducer, initialState } from "./Reducer/movieReducer";
 function App() {
-  const [cartData, setCartData] = React.useState([]);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [favorites, setFavorites] = React.useState([]);
-  const [selectedCategory, setSelectedCategory] = React.useState("trending");
+  const [state, dispatch] = useReducer(movieReducer, initialState);
+
   const [darkMode, setDarkMode] = React.useState(true);
   return (
     <themeContext.Provider value={{ darkMode, setDarkMode }}>
       <movieContext.Provider
         value={{
-          cartData,
-          setCartData,
-          searchQuery,
-          setSearchQuery,
-          favorites,
-          setFavorites,
-          selectedCategory,
-          setSelectedCategory,
+          state,
+          dispatch,
         }}
       >
         <RootPage />

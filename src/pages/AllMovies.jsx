@@ -4,7 +4,7 @@ import SingleMovie from "../components/SingleMovie";
 import { movieContext } from "../context";
 
 export default function AllMovies({ onClickHandler }) {
-  const { searchQuery, selectedCategory, favorites } = useContext(movieContext);
+  const { state } = useContext(movieContext);
   const allMovies = getData();
 
   // Filter movies based on selected category and search query
@@ -12,9 +12,9 @@ export default function AllMovies({ onClickHandler }) {
     let movies = allMovies;
 
     // First filter by category
-    switch (selectedCategory) {
+    switch (state.selectedCategory) {
       case "favourites":
-        movies = favorites;
+        movies = state.favorites;
         break;
       case "trending":
         // For now, show all movies as trending. You can add specific logic later
@@ -37,9 +37,9 @@ export default function AllMovies({ onClickHandler }) {
     }
 
     // Then filter by search query if present
-    if (searchQuery.trim()) {
+    if (state.searchQuery.trim()) {
       movies = movies.filter((movie) =>
-        movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+        movie.title.toLowerCase().includes(state.searchQuery.toLowerCase())
       );
     }
 
@@ -51,17 +51,17 @@ export default function AllMovies({ onClickHandler }) {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">
-        {searchQuery.trim()
-          ? `Search Results for "${searchQuery}"`
-          : selectedCategory === "favourites"
+        {state.searchQuery.trim()
+          ? `Search Results for "${state.searchQuery}"`
+          : state.selectedCategory === "favourites"
           ? "Your Favorites"
-          : selectedCategory === "trending"
+          : state.selectedCategory === "trending"
           ? "Trending Movies"
-          : selectedCategory === "newRelease"
+          : state.selectedCategory === "newRelease"
           ? "New Releases"
-          : selectedCategory === "comingSoon"
+          : state.selectedCategory === "comingSoon"
           ? "Coming Soon"
-          : selectedCategory === "watchLater"
+          : state.selectedCategory === "watchLater"
           ? "Watch Later"
           : "All Movies"}
       </h1>
@@ -80,9 +80,9 @@ export default function AllMovies({ onClickHandler }) {
         <div className="text-center py-16">
           <p className="text-lg text-gray-500 mb-2">No movies found</p>
           <p className="text-sm text-gray-400">
-            {searchQuery.trim()
-              ? `No movies match "${searchQuery}". Try a different search term.`
-              : selectedCategory === "favourites"
+            {state.searchQuery.trim()
+              ? `No movies match "${state.searchQuery}". Try a different search term.`
+              : state.selectedCategory === "favourites"
               ? "You haven't added any movies to your favorites yet. Click the heart icon on any movie to add it to your favorites!"
               : "No movies available at the moment."}
           </p>

@@ -10,16 +10,15 @@ import Rating from "./rating";
 export default function SingleMovie({ movie }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const { cartData, setCartData, favorites, setFavorites } =
-    useContext(movieContext);
+  const { state, dispatch } = useContext(movieContext);
 
   const handleAddToCart = (event, movie) => {
     event.stopPropagation();
-    const found = cartData.find((item) => {
+    const found = state.cartData.find((item) => {
       return item.id === movie.id;
     });
     if (!found) {
-      setCartData([...cartData, movie]);
+      dispatch({ type: "ADD_TO_CART", payload: movie });
       toast.success(`Added ${movie.title} to cart`);
     } else {
       toast.error(
@@ -40,18 +39,18 @@ export default function SingleMovie({ movie }) {
 
   const handleToggleFavorite = (event, movie) => {
     event.stopPropagation();
-    const isFavorite = favorites.find((item) => item.id === movie.id);
+    const isFavorite = state.favorites.find((item) => item.id === movie.id);
 
     if (isFavorite) {
-      setFavorites(favorites.filter((item) => item.id !== movie.id));
+      dispatch({ type: "REMOVE_FROM_FAVORITES", payload: movie });
       toast.success(`Removed ${movie.title} from favorites`);
     } else {
-      setFavorites([...favorites, movie]);
+      dispatch({ type: "ADD_TO_FAVORITES", payload: movie });
       toast.success(`Added ${movie.title} to favorites`);
     }
   };
 
-  const isFavorite = favorites.find((item) => item.id === movie.id);
+  const isFavorite = state.favorites.find((item) => item.id === movie.id);
   return (
     <>
       {showModal && (

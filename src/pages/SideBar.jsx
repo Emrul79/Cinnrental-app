@@ -7,15 +7,15 @@ import watchLater from "../assets/icons/watchLater.svg";
 import { movieContext } from "../context";
 
 export default function SideBar() {
-  const { selectedCategory, setSelectedCategory } = useContext(movieContext);
+  const { state, dispatch } = useContext(movieContext);
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+    dispatch({ type: "SET_SELECTED_CATEGORY", payload: category });
   };
 
   const getCategoryClass = (category) => {
     const baseClass = "flex items-center space-x-2 px-5 py-3.5 rounded-lg";
-    return selectedCategory === category
+    return state.selectedCategory === category
       ? `${baseClass} bg-emerald-500 text-black`
       : `${baseClass} hover:bg-gray-100 transition-colors duration-200`;
   };

@@ -1,4 +1,5 @@
 import React from "react";
+import tag from "../assets/movie-covers/tag.svg";
 import { getImage } from "../utils/cine_utils";
 
 export default function MovieDetailsPopUp({ movie, onClose, handleAddToCart }) {
@@ -30,7 +31,7 @@ export default function MovieDetailsPopUp({ movie, onClose, handleAddToCart }) {
                 className="bg-emerald-500 rounded-lg py-2 px-5 flex items-center justify-center gap-2 text-[#171923] font-semibold text-sm"
                 href="#"
               >
-                <img src="./assets/tag.svg" alt="" />
+                <img src={tag} alt="" />
                 <span>${movie.price} | Add to Cart</span>
               </a>
               <a

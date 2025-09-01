@@ -11,12 +11,12 @@ import { movieContext, themeContext } from "../context";
 
 export default function Header() {
   const [showCart, setShowCart] = useState(false);
-  const { cartData, searchQuery, setSearchQuery } = useContext(movieContext);
+  const { state, dispatch } = useContext(movieContext);
   const { darkMode, setDarkMode } = useContext(themeContext);
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      toast.success(`Searching for: ${searchQuery}`);
+    if (state.searchQuery.trim()) {
+      toast.success(`Searching for: ${state.searchQuery}`);
     } else {
       toast.error("Please enter a search term");
     }
@@ -62,9 +62,9 @@ export default function Header() {
                 href="#"
               >
                 <img src={shoffingCart} width="24" height="24" alt="" />
-                {cartData.length > 0 && (
+                {state.cartData && state.cartData.length > 0 && (
                   <span className="rounded-full absolute top-[-12px] left-[28px] bg-[#12CF6F] text-white text-center p-[2px] w-[30px] h-[30px]">
-                    {cartData.length}
+                    {state.cartData.length}
                   </span>
                 )}
               </a>
@@ -79,8 +79,13 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Search for movies..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={state.searchQuery}
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_SEARCH_QUERY",
+                    payload: e.target.value,
+                  })
+                }
                 className="w-full px-4 py-3 pl-12 pr-16 sm:pr-20 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md text-sm sm:text-base"
               />
               {/* Search Icon */}
